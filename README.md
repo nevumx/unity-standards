@@ -63,7 +63,7 @@ With Unity, some restrictions can be placed on state with attributes as well. `[
 
 ```csharp
 [SerializeField]	private	MonoBehaviour	_cube;
-					public	MonoBehaviour	Cube	{ get { return _cube: } }
+			public	MonoBehaviour	Cube	{ get { return _cube: } }
 ```
 
 Note how this utilizes the `public` and `private` access modifiers to achieve the goal that is pursued: the `_cube` field is only be avalable to the class and the Unity serializer.
@@ -174,14 +174,14 @@ Whenever more than one data member is declared at the beginning of a class, all 
 ```csharp
 public class Example
 {
-	public	static	readonly	int		ExampleStaticReadOnlyInt	= 5;
-	public			readonly	int		ExampleReadOnlyInt			= 5;
-	public	static				int		ExampleStaticInt;			= 5;
-	public						float	ExampleFloat;				= 5.0f;
+	public	static	readonly		int	ExampleStaticReadOnlyInt	= 5;
+	public			readonly	int	ExampleReadOnlyInt		= 5;
+	public	static				int	ExampleStaticInt;		= 5;
+	public					float	ExampleFloat;			= 5.0f;
 
 	[NonSerialized]
-	public						LinkedList<LinkedList<int>>
-										ExampleInt;					{ get; private set; }
+	public					LinkedList<LinkedList<int>>
+							ExampleIntListList;		{ get; private set; }
 }
 ```
 
@@ -205,9 +205,9 @@ public class Example
 		// ...
 	}
 
-	[SerializeField]	private	int		_otherNumber;
+	[SerializeField]	private	int	_otherNumber;
 
-						private	bool	_nonSerializedBool;
+				private	bool	_nonSerializedBool;
 
 	public int PropertyInt
 	{
