@@ -24,14 +24,14 @@ As one looks at the different programming constructs made available by the C# st
 
 # II: Introduction
 ## II.A: Ground Rules
-## II.A.1: Environment
+### II.A.1: Environment
 - Use source control, preferably one that has a GUI available. Whether Perforce or Git or another solution is used, a GUI should be available to view local changes, previous diffs, merges, etc.
 - Use a modern IDE with refactoring support.
 
-## II.A.2: Submitted Code is Production Code
+### II.A.2: Submitted Code is Production Code
 Similar to the foundational saying, "always treat a gun as if it is loaded," all code that is submitted to source control should be assumed to be production code. Throughout development, a conscious choice should be made to avoid "prototype code" from making it into source control, as when it makes it there, it rarely makes it out. Often times, this is for good reason: the "prototype code" becomes more understood by programmers, and this often creates a "technical debt Stockholm Syndrome" where the fear of new unknown potential bugs, (which *can* indeed happen) along with deadlines, results in the code being given fixes that do not address the root of the problem. Instead, a refactor is often avoided until some "substantial motivating event" occurs to prompt it. (This usually occurs at a time in development when it is not optimal to do so) The reason for this rule is that, while iteration may take longer, it forces designers to be deliberate with their decisions and what they want to try out; no change made to the source code is free, and this approach incurs the development cost upfront instead of later on, which is a more accurate representation of said cost, and makes for better timeline assessment and predictability.
 
-## II.A.3: Use of Third Party Code is to be Avoided
+### II.A.3: Use of Third Party Code is to be Avoided
 Although the use of code written by a third party is sometimes necessary, its inclusion should not be considered unless all other options have been exhausted. The obvious benefit is not needing to write the code, however in addition to bringing in extra, possibly unwanted functionality (which then essentially becomes "dead code," see section V.D below) this also means that one is at the mercy of whoever wrote the third-party code, meaning that any potential debugging may end up inside the third party code, if the source code is even available. Even if the source code is provided, it is not likely to follow the same standards as one's own code, and as a result, debugging will likely be more difficult. Instead, it is preferable to take the third party source code, (where legally permissable) study it, understand it, modify/rewrite it to conform it to one's own standards (preferably these standards) and then integrate it into one's codebase manually. Even though this is more difficult, it makes the use of the third party code both safer and easier to debug.
 
 ## II.B: Definitions
