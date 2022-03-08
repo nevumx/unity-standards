@@ -51,6 +51,19 @@ by Nicholaos Mouzourakis
 	* [IV.T: Prefer Iterated Lists to Repeated Function Calls](#ivt-prefer-iterated-lists-to-repeated-function-calls)
 	* [IV.U: Iterate over Shallow Copies of Collections for Safety](#ivu-iterate-over-shallow-copies-of-collections-for-safety)
 	* [IV.V: Add a Trailing Comma to All Comma-Separated Lists](#ivv-add-a-trailing-comma-to-all-comma-separated-lists)
+* [V: Structural Considerations](#v-structural-considerations)
+	* [V.A: Do not check for `null` unless you *expect* `null`](#va-do-not-check-for-null-unless-you-expect-null)
+	* [V.B: Use Functions *Only* for Reusable Code](#vb-use-functions-only-for-reusable-code)
+	* [V.C: Minimize the Total Number of Files in the Project](#vc-minimize-the-total-number-of-files-in-the-project)
+	* [V.D: No Dead Code](#vd-no-dead-code)
+	* [V.E: Coroutines vs. Threads vs. Jobs](#ve-coroutines-vs-threads-vs-jobs)
+	* [V.F: Permanent Storage](#vf-permanent-storage)
+	* [V.G: Love Lambdas](#vg-love-lambdas)
+		* [V.G.1: Closures avoid `private`s](#vg1-closures-avoid-privates)
+		* [V.G.2: Functional Style](#vg2-functional-style)
+	* [V.H: Extract Utilities](#vh-extract-utilities)
+	* [V.I: Conditional Compilation for Multiplatform Code](#vi-conditional-compilation-for-multiplatform-code)
+	* [V.J: Proper Use of `HideInInspector`](#vj-proper-use-of-hideininspector)
 
 # I: Preamble
 ## I.A: Purpose of this Document
