@@ -2,7 +2,57 @@ Unity C# Coding Standards and Processes
 =======================================
 by Nicholaos Mouzourakis
 
-# I: Preamble:
+# Table of Contents
+* [I: Preamble](#i-preamble)
+	* [I.A: Purpose of this Document](#ia-purpose-of-this-document)
+	* [I.B: Who should Read this Document](#ib-who-should-read-this-document)
+	* [I.C: Priorites](#ic-priorites)
+		* [I.C.1: A Note on Priorities](#ic1-a-note-on-priorities)
+	* [I.D: Mission Statement](#id-mission-statement)
+* [II: Introduction](#ii-introduction)
+	* [II.A: Ground Rules](#iia-ground-rules)
+		* [II.A.1: Environment](#iia1-environment)
+		* [II.A.2: Submitted Code is Production Code](#iia2-submitted-code-is-production-code)
+		* [II.A.3: Use of Third Party Code is to be Avoided](#iia3-use-of-third-party-code-is-to-be-avoided)
+	* [II.B: Definitions](#iib-definitions)
+		* [II.B.1: Phases of Development](#iib1-phases-of-development)
+		* [II.B.2: State](#iib2-state)
+			* [II.B.2.a: Everything Stems from State](#iib2a-everything-stems-from-state)
+		* [II.B.3: Scope/Access Level](#iib3-scopeaccess-level)
+		* [II.B.4: Multiplicity](#iib4-multiplicity)
+		* [II.B.5: Permissions](#iib5-permissions)
+		* [II.B.6: Attributes](#iib6-attributes)
+* [III: State Considerations](#iii-state-considerations)
+	* [III.A: State Minimization](#iiia-state-minimization)
+		* [III.A.1: Functionize State Derivation](#iiia1-functionize-state-derivation)
+		* [III.A.2: Eliminate Redundant State](#iiia2-eliminate-redundant-state)
+		* [III.A.3: Requirement Changes Lead First to Structural State Changes](#iiia3-requirement-changes-lead-first-to-structural-state-changes)
+* [IV: Stylistic Considerations](#iv-stylistic-considerations)
+	* [IV.A: Tabs vs. Spaces](#iva-tabs-vs-spaces)
+	* [IV.B: Horizontal Whitespace](#ivb-horizontal-whitespace)
+	* [IV.C: Member Order](#ivc-member-order)
+	* [IV.D: Capitalization](#ivd-capitalization)
+	* [IV.E: State Initialization](#ive-state-initialization)
+	* [IV.F: `var` vs Explicit Types in Declarations](#ivf-var-vs-explicit-types-in-declarations)
+	* [IV.G: No Comments](#ivg-no-comments)
+	* [IV.H: File and Function Size Preferences](#ivh-file-and-function-size-preferences)
+	* [IV.I: Using `=` in `if` Statements](#ivi-using--in-if-statements)
+	* [IV.J: No Magic Numbers](#ivj-no-magic-numbers)
+	* [IV.K: `float` Literals Get an `f`](#ivk-float-literals-get-an-f)
+	* [IV.L: Do Not Let Warnings Dictate Coding Style](#ivl-do-not-let-warnings-dictate-coding-style)
+	* [IV.M: Indentation of Long Statements/Expressions](#ivm-indentation-of-long-statementsexpressions)
+	* [IV.N: Always Specify Access Level](#ivn-always-specify-access-level)
+	* [IV.O: Environment-specific Newlines](#ivo-environment-specific-newlines)
+	* [IV.P: Use Defined Constants over Literals when Available](#ivp-use-defined-constants-over-literals-when-available)
+	* [IV.Q: String Interpolation over Concatenation](#ivq-string-interpolation-over-concatenation)
+	* [IV.R: `System.Action<>`s or `System.Func<>`s over `delegate` Declarations](#ivr-systemactions-or-systemfuncs-over-delegate-declarations)
+		* [IV.R.1: `delegate`s vs `event`s](#ivr1-delegates-vs-events)
+	* [IV.S: `for` vs `foreach` vs `ForEach(...)`](#ivs-for-vs-foreach-vs-foreach)
+	* [IV.T: Prefer Iterated Lists to Repeated Function Calls](#ivt-prefer-iterated-lists-to-repeated-function-calls)
+	* [IV.U: Iterate over Shallow Copies of Collections for Safety](#ivu-iterate-over-shallow-copies-of-collections-for-safety)
+	* [IV.V: Add a Trailing Comma to All Comma-Separated Lists](#ivv-add-a-trailing-comma-to-all-comma-separated-lists)
+
+# I: Preamble
 ## I.A: Purpose of this Document
 The main purpose of this document is to detail the best standards and practices of writing Unity C# code. Unlike other coding standards, however, this one also describes the process by which that code should be written. It describes the intentions behind coding decisions that are made at each phase of development, from Pre-Alpha to Alpha to Beta to Gold Master. These principles should apply to all games made with the platform, and also should contain principles that can be reused in other types of software projects in general, but games will be the main focus here. 
 
