@@ -307,7 +307,41 @@ State should be left uninitialized (automatically initialized to the default val
 The `var` keyword should be used when possible, *only if* the type it represents eixsts in the same statement, like so: `var scores = new int[5];` or like so: `var newInstance = new Instance();` or even like so: `var newObject = Instantiate<Prefab>(_objectPrefab);`
 
 ## IV.G: No Comments
-Comments have one possible advantage, and several downsides. While they do "self-document" code to a certain extent, they require more development time to write, and often become quickly out-dated, becoming either irrelevant, or even worse, false. For these reasons, comments are not recommended except in very specific circumstances. Two of which are labelled "*COMMENT EXCEPTION*" the in the next two sections, and the third being very complcated algorithms that would otherwise possibly warrant academic consideration, or for labelling dangerous code to encourage caution to future programmers. `// TODO: (...)` comments are also encouraged to ensure that smaller tasks are not forgotten. Under *no* circumstances should commented-out code be submitted to source control. Deleted code that has the potential to be resurrected should be retrieved from source control via the history it provides if necessary. 
+Comments have one possible advantage, and several downsides. While they do "self-document" code to a certain extent, they require more development time to write, and often become quickly out-dated, becoming either irrelevant, or even worse, false. For these reasons, comments are not recommended except in very specific circumstances. Two of which are labelled "*COMMENT EXCEPTION*" the in the next two sections, and the third being very complcated algorithms that would otherwise possibly warrant academic consideration, or for labelling dangerous code to encourage caution to future programmers. Commenting the last `else { // ... }` or `default:` case with the last (and hopefully default) `enum` available is a fourth exception, like so:
+
+```csharp
+if (value == Stance.STANDING)
+{
+	// ...
+}
+else if (value == Stance.CROUCHING)
+{
+	// ...
+}
+else // if (value == Stance.LYING_DOWN)
+{
+	// ...
+}
+```
+
+or
+
+```csharp
+switch (value)
+{
+	case Stance.STANDING:
+		// ...
+		break;
+	case Stance.CROUCHING:
+		// ...
+		break;
+	default: // case Stance.LYING_DOWN:
+		// ...
+		break;
+}
+```
+
+Finally, `// TODO: (...)` comments are also encouraged to ensure that smaller tasks are not forgotten. Under *no* circumstances should commented-out code be submitted to source control. Deleted code that has the potential to be resurrected should be retrieved from source control via the history it provides if necessary. 
 
 ## IV.H: File and Function Size Preferences
 Individual source files are the preferred way to group similar functions. If they are all related, and a part of the same class, in general, they should be placed together in that class, in that file. `partial` classes are the exception; if a class gets too big, and there is a case for splitting like members into different files, `partial` classes may be used to do so, but this is not required. It is not adviseable to break up a large class when it does not make sense architecurally.
