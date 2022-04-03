@@ -519,7 +519,7 @@ Dead code, meaning code that not reachable from any entry point, (Unity has seve
 The choice between Coroutines, Threads, and the newer Unity Jobs system for asynchronous operations should be made based on the attributes that best suit the operation. Coroutines should be used for operations where multithreaded performance is not needed, as they still occur on the main thread over multiple frames (if they `yield` control). This has the added benefit of also not requiring manual thread synchronization via Mutexes and/or Semaphores. If multithreaded performance is needed, the Unity Jobs system is preferable to C# Threads, as the former is better integrated with Unity, as described [here](https://docs.unity3d.com/Manual/JobSystemOverview.html), however there are some operations it can't do, like prematurely ending an asynchronous operation like a thread can, albeit through [archaic means](https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads). In such scenarios, threads are acceptable, but should be limited to doing work that requires limited synchronization with the main thread, typically that which involves much raw computation that can be easily parallelized.
 
 ## V.F: Permanent Storage
-If it is necessary to write state to permanent storage, it should be done via a special purpose Singleton class or classes. This (these) class(es) will follow a common pattern of lazy evaluation as soon as their singleton(s) is (are) first accessed during execution: the state will be loaded (or created as a default object if not present) from the disk on lasy evaluation, and will be saved to the disk on every modification of its (their) state via `get` and/or `set` properties. WARNING: While primitives will work as normal, Rrferences to data structures (such as `Array<>`s or `Dictionary<>`s) need to be either reassigned on every modification via `set` property, or with the use of a helper function, AND they must also be checked for `null` when they are loaded from the disk in order to prevent `null` data from being loaded in from an obselete file (perhaps from an earlier version of the saved data) as demonstrated below...
+If it is necessary to write state to permanent storage, it should be done via a special purpose Singleton class or classes. This (these) class(es) will follow a common pattern of lazy evaluation as soon as their singleton(s) is (are) first accessed during execution: the state will be loaded (or created as a default object if not present) from the disk on lasy evaluation, and will be saved to the disk on every modification of its (their) state via `get` and/or `set` properties.
 
 ```csharp
 [Serializable]
@@ -553,7 +553,7 @@ public class GameData
 		{
 			return _stringArray;
 		}
-		set
+		set // WARNING: See WARNING 1 about reference types like arrays below examples...
 		{
 			_stringArray = value;
 			WriteToDisk();
@@ -576,7 +576,7 @@ public class GameData
 
 	public Dictionary<string, int> StringIntDict { get; private set; }
 
-	public void SetLevelPositionData(string name, int number)
+	public void SetStringIntData(string name, int number)
 	{
 		StringIntDict.Add(name, number);
 		WriteToDisk();
@@ -598,7 +598,7 @@ public class GameData
 			var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 			using (var stream = new System.IO.FileStream(SavedSettingsFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.None))
 			{
-				_cachedInstance = (GameData)formatter.Deserialize(stream);
+				_cachedInstance = (GameData)formatter.Deserialize(stream); // WARNING: See WARNINGs 2 & 3 about deserialization below examples...
 			}
 		}
 		catch
@@ -621,7 +621,7 @@ public class GameData
 
 This permanent state can then be used in code like so:
 
-```
+```csharp
 if (GameData.Get.DocumentaryButtons)
 {
 	// ...
@@ -630,9 +630,11 @@ if (GameData.Get.DocumentaryButtons)
 GameData.Get.StringArray = new string[] { "String1, "String2" };
 ```
 
-*WARNING:* Reference types like `Array<T>`s have to be assigned via the = operator, because assigning to a particular index of an array, or using a method like `.Add(...)` on a `Dictionary<K, V>` will not write the state to the disk through the `set` property. They *also* need to be initialized to empty collections if `null`, in order to protect against deserialization of older versions of the data, like at the end of the `ReadFromDisk()` function in the above example. As with III.A.1, bespoke collections can be used to get around this limitation.
+*WARNING 1:* While primitives will work as normal, Rrferences to data structures (such as `Array<>`s or `Dictionary<>`s) need to be either reassigned on every modification via `set` property, or with the use of a helper function, AND they must also be checked for `null` when they are loaded from the disk in order to prevent `null` data from being loaded in from an obselete file (perhaps from an earlier version of the saved data) as demonstrated in the `ReadFromDisk()` function above.
 
-*WARNING:* `BinaryFormatter` has been found by Microsoft to be [unsafe](https://docs.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide). Be sure to consider all options when it comes to serialization/deserialization, potentially with encryption.
+*WARNING 2:* Deserialization in this manner will ***not*** fill in missing fields with their default values in the class!!! This is especially important for backwards compatibility and is the reason for the rule about naming `bool`s in [Section IV.E](#ive-state-initialization).
+
+*WARNING 3:* `BinaryFormatter` has been found by Microsoft to be [unsafe](https://docs.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide). Be sure to consider all options when it comes to serialization/deserialization, potentially with encryption.
 
 ## V.G: Love Lambdas
 Lambda functions are a very useful tool for writing cleaner code. In addition to their ability to act as more verbose (and yet cleaner) inline function pointers for things like sorting algorithms, they also make for a great callback mechanism and should definitely be used for functions that need to be called at the end of a long processs such as an animation, for a user interaction such as a button, or anywhere else where more than one behavior is necessary as part of a function's execution. They should also be used instead of anonymous methods, and their parameters (if present) should be single letters, surrounded by parentheses only if more than one is present, like so: `numbers.All(n => n > 5)` or `numbers.Sort((a, b) => a > b);` If a lambda function is used more than once, or is recursive, use a local function instead. For example, instead of
